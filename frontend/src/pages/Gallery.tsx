@@ -33,15 +33,17 @@ const Gallery: React.FC = () => {
     try {
       // Load categories
       const categoriesData = await designService.getCategories();
-      setCategories(categoriesData);
+      setCategories(Array.isArray(categoriesData) ? categoriesData : []);
 
       // Load designers
       const designersResponse = await api.get('/users/designers/', {
         params: { is_approved: true, page_size: 100 }
       });
-      setDesigners(designersResponse.data.results);
+      setDesigners(Array.isArray(designersResponse.data.results) ? designersResponse.data.results : []);
     } catch (error) {
       console.error('Error loading initial data:', error);
+      setCategories([]);
+      setDesigners([]);
     }
   };
 
